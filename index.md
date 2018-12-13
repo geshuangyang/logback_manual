@@ -19,7 +19,7 @@
 
 **`本手册目录`：**
 
-第一单元：[logback 的介绍]()
+第一单元：[logback 的介绍](https://github.com/rootedInSoil/logback_manual/blob/master/chapter01.md)
 
 第二单元：[架构]()
 
