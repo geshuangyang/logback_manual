@@ -128,17 +128,69 @@ public interface Logger {
 
 为了更形象的说明命中规则的工作，在下面的表格中，纵向的表头是指定给日志记录器 p 的有效级别，表格中行与列交叉的每个格子显示了基本命中规则的结果。
 
-<table>
-    <tr>
-        <td colspan="2">日志请求 p 级别</td>
-        <td rowspan="6"> 日志记录器 p 有效级别 </td>
-    </tr>
-    <tr>
-        <td>TRACE</td><td>DEBUG</td><td>INFO</td><td>WARN</td><td>ERROR</td><td>OFF</td>
-    </tr>
-    <tr>
-        <td>TRACE</td><td>YES</td><td>NO</td><td>NO</td><td>NO</td><td>NO</td><td>NO</td>
-    </tr>
-</table>
-            
-            
+![](https://raw.githubusercontent.com/rootedInSoil/logback_manual/master/img-2.1.png)
+
+
+下面是一个基本命中规则的例子
+
+```java
+import ch.qos.logback.classic.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+...
+
+// 获取一个命名为 “com.foo” 的日志记录器实例。另外再假设该日志记录器的类型是 `ch.qos.logback.classic.Logger`，
+//因此我们可以设置它的级别
+ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger)LoggerFactory.getLogger("com.foo");
+
+// 设置级别为 INFO。setLevel（）方法要求是 logback 的日志记录器
+logger.setLevel(Level.INFO);
+
+Logger barLogger = LoggerFactory.getLogger("com.foo.Bar");
+
+// 请求有效，因为 WARN >= INFO
+logger.warn("Low fuel level.");
+
+// 请求无效，因为 DEBUG < INFO
+logger.debug("Starting search for nearest gas station.");
+
+// The logger instance barlogger, named "com.foo.Bar", 
+// will inherit its level from the logger named 
+// "com.foo" Thus, the following request is enabled 
+// because INFO >= INFO. 
+barLogger.info("Located nearest gas station.");
+
+// This request is disabled, because DEBUG < INFO. 
+barLogger.debug("Exiting gas station search");
+```
+           
+           
+## 调用日志记录器
+
+
+## Appenders 与 Layouts
+
+#### Appender Additivity
+
+
+## 参数化日志输出
+
+#### 更好的替代方式
+
+
+## 底层概览
+
+#### 1.获取过滤链判断
+#### 2.应用基本命中规则
+#### 3.创建日志输出事件对象
+#### 4.调用 Appender
+#### 5.输出格式化
+#### 6.发送日志输出事件
+
+
+## 性能
+
+#### 1.日志输出完全关闭时的性能
+#### 2.日志输出开启时判断日志是否输出的性能
+#### 3.实际日志输出（格式化与写入输出设备）
+
